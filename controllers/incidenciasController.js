@@ -6,10 +6,15 @@ const incidencias = [];
 const crearIncidencia = (req, res) => {
     const {empleado, area, descripcion, prioridad} = req.body;
 
-    const nuevoPaquete = {id, empleado, area, descripcion, prioridad, estado};
-    nuevoPaquete.id = helper.generarID();
-    nuevoPaquete.estado = "pendiente";
-    
+    const nuevoPaquete = {
+        id : helper.generarID(), 
+        empleado : empleado, 
+        area : area, 
+        descripcion : descripcion, 
+        prioridad : prioridad, 
+        estado : "pendiente"
+    };
+
     const validaciones = [
         {validar : helper.cadenaVacia(empleado), info : "El empleado se encuentra vacio"},
         {validar : helper.cadenaVacia(area), info : "El area se encuentra vacia"},
@@ -48,13 +53,22 @@ const validarPrioridad = (prioridad) => {
 //! Retornar incidencias en formato JSON
 
 const listarIncidencias = (req, res) => {
+
+    if(helper.arregloVacio(incidencias)){
+        res.status(200).json({mensaje : "No hay datos disponibles"});
+    }
+
     res.status(200).json(incidencias);
 }
 
 //! Buscar por ID
 const buscarID = (req, res) => {
-    const id = parseInt(req.params.id);
 
+    if(helper.arregloVacio(incidencias)){
+        res.status(200).json({mensaje : "No hay datos disponibles"});
+    }
+
+    const id = parseInt(req.params.id);
     const objeto = incidencias.find(i => i.id === id);
 
     if(!objeto){
@@ -67,8 +81,12 @@ const buscarID = (req, res) => {
 //! Cambiar Estado
 
 const cambiarEstado = (req, res) => {
-    const {id, estado} = req.params;
 
+    if(helper.arregloVacio(incidencias)){
+        res.status(200).json({mensaje : "No hay datos disponibles"});
+    }
+
+    const {id, estado} = req.params;
     const objeto = incidencias.find(i => i.id === parseInt(id));
 
     if(!objeto){
@@ -89,26 +107,31 @@ const cambiarEstado = (req, res) => {
             objeto.estado = "Cancelada";
             break;
         default:
-            res.status(404).json({message : "El estado no es valido"});
+            res.status(400).json({message : "El estado no es valido"});
             break;
     }
 
-    res.status(200).json({message : `La incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
+    res.status(200).json({message : `El estado de la incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
 }
 
 //! Eliminar incidencia
 
 const eliminarIncidencia = (req, res) => {
+
+    if(helper.arregloVacio(incidencias)){
+        res.status(200).json({mensaje : "No hay datos disponibles"});
+    }
+
     const id = parseInt(req.params.id);
 
-    let index = incidencias.findIndex(id) === (-1);
+    let index = incidencias.findIndex(id);
 
     if(index === (-1)){
-        return res.status(400).json({message : "Error"});
+        return res.status(400).json({message : `No existe la incidencia (${id})`});
     }
 
     //! Indice y cuantos elmentos debe borrar
     incidencias.splice(index, 1);
 
-    res.status(400).json({message : ""});
+    res.status(400).json({message : `Se elimino correctamente la incidencia (${id})`});
 }
