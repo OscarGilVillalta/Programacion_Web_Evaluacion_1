@@ -63,3 +63,35 @@ const buscarID = (req, res) => {
 
     res.status(200).json(objeto);
 }
+
+//! Cambiar Estado
+
+const CambiarEstado = (req, res) => {
+    const {id, estado} = req.params;
+
+    const objeto = incidencias.find(i => i.id === parseInt(id));
+
+    if(!objeto){
+        return res.status(400).json(`Incidencia no encontrada (${id})`);
+    }
+
+    switch(estado){
+        case "Pendiente":
+            objeto.estado = "Pendiente";
+            break;
+        case "En Proceso":
+            objeto.estado = "En Proceso";
+            break;
+        case "Resuelta":
+            objeto.estado = "Resuelta";
+            break;
+        case "Cancelada":
+            objeto.estado = "Cancelada";
+            break;
+        default:
+            res.status(404).json({message : "El estado no es valido"});
+            break;
+    }
+
+    res.status(200).json({message : `La incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
+}
