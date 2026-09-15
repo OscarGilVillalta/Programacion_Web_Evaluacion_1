@@ -26,7 +26,7 @@ const crearIncidencia = (req, res) => {
 
     incidencias.push(nuevoPaquete);
 
-    res.status(200).json({mensaje : `La solicitud se guardo con el ID : ${nuevoPaquete.id}`});
+    res.status(200).json({message : `La solicitud se guardo con el ID : ${nuevoPaquete.id}`});
 }
 
 const validarPrioridad = (prioridad) => {
@@ -66,7 +66,7 @@ const buscarID = (req, res) => {
 
 //! Cambiar Estado
 
-const CambiarEstado = (req, res) => {
+const cambiarEstado = (req, res) => {
     const {id, estado} = req.params;
 
     const objeto = incidencias.find(i => i.id === parseInt(id));
@@ -94,4 +94,21 @@ const CambiarEstado = (req, res) => {
     }
 
     res.status(200).json({message : `La incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
+}
+
+//! Eliminar incidencia
+
+const eliminarIncidencia = (req, res) => {
+    const id = parseInt(req.params.id);
+
+    let index = incidencias.findIndex(id) === (-1);
+
+    if(index === (-1)){
+        return res.status(400).json({message : "Error"});
+    }
+
+    //! Indice y cuantos elmentos debe borrar
+    incidencias.splice(index, 1);
+
+    res.status(400).json({message : ""});
 }
