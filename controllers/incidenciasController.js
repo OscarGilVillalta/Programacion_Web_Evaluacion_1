@@ -50,3 +50,16 @@ const validarPrioridad = (prioridad) => {
 const listarIncidencias = (req, res) => {
     res.status(200).json(incidencias);
 }
+
+//! Buscar por ID
+const buscarID = (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const objeto = incidencias.find(i => i.id === id);
+
+    if(!objeto){
+        return res.status(400).json(`Incidencia no encontrada (${id})`);
+    }
+
+    res.status(200).json(objeto);
+}
