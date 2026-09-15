@@ -15,7 +15,7 @@ const crearIncidencia = (req, res) => {
         {validar : helper.cadenaVacia(area), info : "El area se encuentra vacia"},
         {validar : helper.cadenaVacia(descripcion), info : "La descripcion se encuentra vacia"},
         {validar : helper.cadenaVacia(prioridad), info : "La prioridad esta vacia"} ,
-        {validar : prioridadValidar(prioridad), info : "La prioridad con coincide con los tipos que existen"}
+        {validar : validarPrioridad(prioridad), info : "La prioridad con coincide con los tipos que existen"}
     ]
 
     const error = validaciones.find(i => i.validar);
@@ -29,7 +29,7 @@ const crearIncidencia = (req, res) => {
     res.status(200).json({mensaje : `La solicitud se guardo con el ID : ${nuevoPaquete.id}`});
 }
 
-const prioridadValidar = (prioridad) => {
+const validarPrioridad = (prioridad) => {
     const prioridades = {
         alta: "alta",
         media: "media",
@@ -44,3 +44,9 @@ const prioridadValidar = (prioridad) => {
 
     return false;
 };
+
+//! Retornar incidencias en formato JSON
+
+const listarIncidencias = (req, res) => {
+    res.status(200).json(incidencias);
+}
