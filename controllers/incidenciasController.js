@@ -1,6 +1,7 @@
 const helper = require('../utils/helper.js');
 
 const incidencias = [];
+//const estadisticas = [];
 
 //! Crear una incidencia
 const crearIncidencia = (req, res) => {
@@ -134,4 +135,48 @@ const eliminarIncidencia = (req, res) => {
     incidencias.splice(index, 1);
 
     res.status(400).json({message : `Se elimino correctamente la incidencia (${id})`});
+}
+
+//! Estadisticas de estado
+
+const estadisticas = (req, res) => {
+    res.status(200).json({
+        totalIncidencias: incidencias.length,
+        pendientes: incidencias.filter(incidencias => incidencias.estado === "Pendiente").length,
+        enProceso: incidencias.filter(incidencias => incidencias.estado === "En Proceso").length,
+        resueltas: incidencias.filter(incidencias => incidencias.estado === "Resuelta").length,
+        canceladas: incidencias.filter(incidencias => incidencias.estado === "Cancelada").length
+    });
+}
+
+//! Clasificacion de prioridades
+
+const clasificacion = (req, res) => {
+    const {id, prioridad} = req.params;
+
+    const objeto = incidencias.find(i => i.id === parseInt(id));
+
+    if(!objeto){
+        return res.status(400).json(`Incidencia no encontrada (${id})`);
+    }
+
+    const nuevaClasificacion = {id, clas};
+    nuevaClasificacion.id = id;
+
+    switch(prioridad){
+        case "Baja":
+            nuevaClasificacion.clas = "Normal";
+            break;
+        case "Media":
+            nuevaClasificacion.clas = "Importante";
+            break;
+        case "Alta":
+            nuevaClasificacion.clas = "Critica";
+            break;
+        default:
+            res.status(404).json({message : "La prioridad no es valida"});
+            break;
+    }
+
+    res.status(200).json(nuevaClasificacion);
 }
