@@ -9,12 +9,14 @@ const {
     eliminarIncidencia,
     estadisticas,
     clasificacion
-} = require ('../controllers/incidenciasController.js')
+} = require ('../controllers/incidenciasController')
 
-router.post('/incidencias', crearIncidencia);
-router.get('/incidencias', listarIncidencias);
-router.get('/incidencias/:id', buscarID);
-router.put('/incidencias/:id/:estado', cambiarEstado);
-router.delete('/incidencias/:id', eliminarIncidencia);
-router.get('/estadisticas', estadisticas);
-router.get('/incidencias/:id/clasificacion', clasificacion);
+router.post('/', crearIncidencia); //! Funciona
+router.get('/', listarIncidencias); //! Funciona
+router.get('/:id', buscarID); //! Funciona
+router.put('/:id/:estado', cambiarEstado); //! Funciona (Verificar que cambie el tipo)
+router.delete('/:id', eliminarIncidencia); //! Error
+router.get('/estadisticas', estadisticas); //! Error
+router.get('/:id/clasificacion', clasificacion); //! Error
+
+module.exports = router;
