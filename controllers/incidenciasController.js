@@ -6,20 +6,15 @@ const incidencias = [];
 const crearIncidencia = (req, res) => {
     const {empleado, area, descripcion, prioridad} = req.body;
 
-    const nuevaIncidencia = {
-        id : helper.generarID(), 
-        empleado : empleado, 
-        area : area, 
-        descripcion : descripcion, 
-        prioridad : prioridad, 
-        estado : "Pendiente"
-    };
-
     const validaciones = [
+        {validar : !helper.verificarTipo(empleado, "string"), info : "El empleado debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(empleado), info : "El empleado se encuentra vacio"},
+        {validar : !helper.verificarTipo(area, "string"), info : "El area debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(area), info : "El area se encuentra vacia"},
+        {validar : !helper.verificarTipo(descripcion, "string"), info : "La descripcion debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(descripcion), info : "La descripcion se encuentra vacia"},
-        {validar : helper.cadenaVacia(prioridad), info : "La prioridad esta vacia"} ,
+        {validar : !helper.verificarTipo(prioridad, "string"), info : "La prioridad debe ser una cadena de texto"},
+        {validar : helper.cadenaVacia(prioridad), info : "La prioridad esta vacia"},
         {validar : !validarPrioridad(prioridad), info : "La prioridad con coincide con los tipos que existen"}
     ]
 
@@ -28,6 +23,15 @@ const crearIncidencia = (req, res) => {
     if(error !== undefined){
         return res.status(400).json({ error : error.info });
     }
+
+    const nuevaIncidencia = {
+        id : helper.generarID(), 
+        empleado : empleado, 
+        area : area, 
+        descripcion : descripcion, 
+        prioridad : prioridad, 
+        estado : "Pendiente"
+    };
 
     incidencias.push(nuevaIncidencia);
 
@@ -90,10 +94,16 @@ const cambiarEstado = (req, res) => {
     const {estado} = req.body;
     const objeto = incidencias.find(i => i.id === parseInt(id));
 
+    if(objeto.estado === estado){
+        return res.status(200).json({mensafe : "El estado es el mismo, debe elegir uno diferente para cambiarlo"});
+    }
+
     if(!objeto){
-        return res.status(400).json(`Incidencia no encontrada (${id})`);
+        return res.status(400).json({mensaje : `Incidencia no encontrada (${id})`});
+    }else if(!helper.verificarTipo(estado, "string")){
+        return res.status(400).json({mensaje : `El \'estado\' no es un tipo de dato valido`});
     }else if(helper.cadenaVacia(estado)){
-        return res.status(400).json(`El \'estado\' se encuentra vacio`);
+        return res.status(400).json({mensaje : `El \'estado\' se encuentra vacio`});
     }
 
     switch(estado){
