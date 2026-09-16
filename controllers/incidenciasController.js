@@ -6,21 +6,16 @@ const incidencias = [];
 const crearIncidencia = (req, res) => {
     const {empleado, area, descripcion, prioridad} = req.body;
 
-    const nuevoPaquete = {
-        id : helper.generarID(), 
-        empleado : empleado, 
-        area : area, 
-        descripcion : descripcion, 
-        prioridad : prioridad, 
-        estado : "Pendiente"
-    };
-
     const validaciones = [
+        {validar : !helper.verificarTipo(empleado, "string"), info : "El empleado debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(empleado), info : "El empleado se encuentra vacio"},
+        {validar : !helper.verificarTipo(area, "string"), info : "El area debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(area), info : "El area se encuentra vacia"},
+        {validar : !helper.verificarTipo(descripcion, "string"), info : "La descripcion debe ser una cadena de texto"},
         {validar : helper.cadenaVacia(descripcion), info : "La descripcion se encuentra vacia"},
-        {validar : helper.cadenaVacia(prioridad), info : "La prioridad esta vacia"} ,
-        {validar : validarPrioridad(prioridad), info : "La prioridad con coincide con los tipos que existen"}
+        {validar : !helper.verificarTipo(prioridad, "string"), info : "La prioridad debe ser una cadena de texto"},
+        {validar : helper.cadenaVacia(prioridad), info : "La prioridad esta vacia"},
+        {validar : !validarPrioridad(prioridad), info : "La prioridad con coincide con los tipos que existen"}
     ]
 
     const error = validaciones.find(i => i.validar);
@@ -29,16 +24,25 @@ const crearIncidencia = (req, res) => {
         return res.status(400).json({ error : error.info });
     }
 
-    incidencias.push(nuevoPaquete);
+    const nuevaIncidencia = {
+        id : helper.generarID(), 
+        empleado : empleado, 
+        area : area, 
+        descripcion : descripcion, 
+        prioridad : prioridad, 
+        estado : "Pendiente"
+    };
 
-    res.status(200).json({message : `La solicitud se guardo con el ID : ${nuevoPaquete.id}`});
+    incidencias.push(nuevaIncidencia);
+
+    res.status(200).json({message : `La solicitud se guardo con el ID : ${nuevaIncidencia.id}`});
 }
 
 const validarPrioridad = (prioridad) => {
     const prioridades = {
-        alta: "alta",
-        media: "media",
-        baja: "baja",
+        alta: "Alta",
+        media: "Media",
+        baja: "Baja",
     };
 
     for(const valor in prioridades){
@@ -86,11 +90,20 @@ const cambiarEstado = (req, res) => {
         return res.status(200).json({mensaje : "No hay datos disponibles"});
     }
 
-    const {id, estado} = req.params;
+    const id = req.params.id;
+    const {estado} = req.body;
     const objeto = incidencias.find(i => i.id === parseInt(id));
 
+    if(objeto.estado === estado){
+        return res.status(200).json({mensafe : "El estado es el mismo, debe elegir uno diferente para cambiarlo"});
+    }
+
     if(!objeto){
-        return res.status(400).json(`Incidencia no encontrada (${id})`);
+        return res.status(400).json({mensaje : `Incidencia no encontrada (${id})`});
+    }else if(!helper.verificarTipo(estado, "string")){
+        return res.status(400).json({mensaje : `El \'estado\' no es un tipo de dato valido`});
+    }else if(helper.cadenaVacia(estado)){
+        return res.status(400).json({mensaje : `El \'estado\' se encuentra vacio`});
     }
 
     switch(estado){
@@ -108,7 +121,7 @@ const cambiarEstado = (req, res) => {
             break;
         default:
             res.status(400).json({message : "El estado no es valido"});
-            break;
+            return;
     }
 
     res.status(200).json({message : `El estado de la incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
@@ -139,6 +152,11 @@ const eliminarIncidencia = (req, res) => {
 //! Estadisticas de estado
 
 const estadisticas = (req, res) => {
+
+    if(helper.arregloVacio(incidencias)){
+        return res.status(200).json({mensaje : "No hay datos disponibles"});
+    }
+
     res.status(200).json({
         totalIncidencias: incidencias.length,
         pendientes: incidencias.filter(i => i.estado === "Pendiente").length,
@@ -173,7 +191,7 @@ const clasificacion = (req, res) => {
             break;
         default:
             res.status(404).json({message : "La prioridad no es valida"});
-            break;
+            return;
     }
 
     res.status(200).json(nuevaClasificacion);

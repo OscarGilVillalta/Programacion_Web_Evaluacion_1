@@ -4,7 +4,7 @@ const incidenciaRoutes = require('./routes/incidencias.js');
 
 const app = express();
 const port = 3000;
-//http://localhost:3000/
+//http://localhost:3000/incidencias
 
 app.use(express.json());
 app.use('/incidencias', incidenciaRoutes);
