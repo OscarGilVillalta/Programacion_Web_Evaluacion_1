@@ -125,3 +125,35 @@ const estadisticas = (req, res) => {
         canceladas: incidencias.filter(incidencias => incidencias.estado === "Cancelada").length
     });
 }
+
+//! Clasificacion de prioridades
+
+const clasificacion = (req, res) => {
+    const {id, prioridad} = req.params;
+
+    const objeto = incidencias.find(i => i.id === parseInt(id));
+
+    if(!objeto){
+        return res.status(400).json(`Incidencia no encontrada (${id})`);
+    }
+
+    const nuevaClasificacion = {id, clas};
+    nuevaClasificacion.id = id;
+
+    switch(prioridad){
+        case "Baja":
+            nuevaClasificacion.clas = "Normal";
+            break;
+        case "Media":
+            nuevaClasificacion.clas = "Importante";
+            break;
+        case "Alta":
+            nuevaClasificacion.clas = "Critica";
+            break;
+        default:
+            res.status(404).json({message : "La prioridad no es valida"});
+            break;
+    }
+
+    res.status(200).json(nuevaClasificacion);
+}
