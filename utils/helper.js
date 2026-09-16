@@ -7,7 +7,7 @@ const generarID = () => {
 
 //! Verifica que una cadena de texto este vacia
 const cadenaVacia = (text) => {
-    if (toString(text.trim().length) === 0) {
+    if (text === null || text === undefined || text.trim().length === 0) {
         return true;
     }
 
