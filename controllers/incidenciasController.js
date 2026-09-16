@@ -55,7 +55,7 @@ const validarPrioridad = (prioridad) => {
 const listarIncidencias = (req, res) => {
 
     if(helper.arregloVacio(incidencias)){
-        res.status(200).json({mensaje : "No hay datos disponibles"});
+        return res.status(200).json({mensaje : "No hay datos disponibles"});
     }
 
     res.status(200).json(incidencias);
@@ -65,7 +65,7 @@ const listarIncidencias = (req, res) => {
 const buscarID = (req, res) => {
 
     if(helper.arregloVacio(incidencias)){
-        res.status(200).json({mensaje : "No hay datos disponibles"});
+        return res.status(200).json({mensaje : "No hay datos disponibles"});
     }
 
     const id = parseInt(req.params.id);
@@ -83,7 +83,7 @@ const buscarID = (req, res) => {
 const cambiarEstado = (req, res) => {
 
     if(helper.arregloVacio(incidencias)){
-        res.status(200).json({mensaje : "No hay datos disponibles"});
+        return res.status(200).json({mensaje : "No hay datos disponibles"});
     }
 
     const {id, estado} = req.params;
@@ -119,21 +119,21 @@ const cambiarEstado = (req, res) => {
 const eliminarIncidencia = (req, res) => {
 
     if(helper.arregloVacio(incidencias)){
-        res.status(200).json({mensaje : "No hay datos disponibles"});
+        return res.status(200).json({mensaje : "No hay datos disponibles"});
     }
 
     const id = parseInt(req.params.id);
 
-    let index = incidencias.findIndex(id);
+    let index = incidencias.findIndex(item => item.id === id);
 
-    if(index === (-1)){
+    if(index === -1){
         return res.status(400).json({message : `No existe la incidencia (${id})`});
     }
 
     //! Indice y cuantos elmentos debe borrar
     incidencias.splice(index, 1);
 
-    res.status(400).json({message : `Se elimino correctamente la incidencia (${id})`});
+    res.status(200).json({message : `Se elimino correctamente la incidencia (${id})`});
 }
 
 //! Estadisticas de estado
