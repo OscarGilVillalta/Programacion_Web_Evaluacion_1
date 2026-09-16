@@ -35,7 +35,7 @@ const crearIncidencia = (req, res) => {
 
     incidencias.push(nuevaIncidencia);
 
-    res.status(200).json({message : `La solicitud se guardo con el ID : ${nuevaIncidencia.id}`});
+    res.status(200).json({mensaje : `La solicitud se guardo con el ID : ${nuevaIncidencia.id}`});
 }
 
 const validarPrioridad = (prioridad) => {
@@ -120,11 +120,11 @@ const cambiarEstado = (req, res) => {
             objeto.estado = "Cancelada";
             break;
         default:
-            res.status(400).json({message : "El estado no es valido"});
+            res.status(400).json({mensaje : "El estado no es valido"});
             return;
     }
 
-    res.status(200).json({message : `El estado de la incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
+    res.status(200).json({mensaje : `El estado de la incidencia se cambio exitosamente (${objeto.id}, ${objeto.estado})`});
 }
 
 //! Eliminar incidencia
@@ -140,13 +140,13 @@ const eliminarIncidencia = (req, res) => {
     let index = incidencias.findIndex(item => item.id === id);
 
     if(index === -1){
-        return res.status(400).json({message : `No existe la incidencia (${id})`});
+        return res.status(400).json({mensaje : `No existe la incidencia (${id})`});
     }
 
     //! Indice y cuantos elmentos debe borrar
     incidencias.splice(index, 1);
 
-    res.status(200).json({message : `Se elimino correctamente la incidencia (${id})`});
+    res.status(200).json({mensaje : `Se elimino correctamente la incidencia (${id})`});
 }
 
 //! Estadisticas de estado
@@ -190,7 +190,7 @@ const clasificacion = (req, res) => {
             nuevaClasificacion.clas = "Critica";
             break;
         default:
-            res.status(404).json({message : "La prioridad no es valida"});
+            res.status(404).json({mensaje : "La prioridad no es valida"});
             return;
     }
 

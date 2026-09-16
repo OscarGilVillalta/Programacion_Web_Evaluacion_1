@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # API REST - Gestión de Incidencias
 
 API REST desarrollada con Node.js y Express para gestionar incidencias de una empresa.
