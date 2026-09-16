@@ -12,7 +12,7 @@ const crearIncidencia = (req, res) => {
         area : area, 
         descripcion : descripcion, 
         prioridad : prioridad, 
-        estado : "pendiente"
+        estado : "Pendiente"
     };
 
     const validaciones = [
@@ -141,17 +141,17 @@ const eliminarIncidencia = (req, res) => {
 const estadisticas = (req, res) => {
     res.status(200).json({
         totalIncidencias: incidencias.length,
-        pendientes: incidencias.filter(incidencias => incidencias.estado === "Pendiente").length,
-        enProceso: incidencias.filter(incidencias => incidencias.estado === "En Proceso").length,
-        resueltas: incidencias.filter(incidencias => incidencias.estado === "Resuelta").length,
-        canceladas: incidencias.filter(incidencias => incidencias.estado === "Cancelada").length
+        pendientes: incidencias.filter(i => i.estado === "Pendiente").length,
+        enProceso: incidencias.filter(i => i.estado === "En Proceso").length,
+        resueltas: incidencias.filter(i => i.estado === "Resuelta").length,
+        canceladas: incidencias.filter(i => i.estado === "Cancelada").length
     });
 }
 
 //! Clasificacion de prioridades
 
 const clasificacion = (req, res) => {
-    const {id, prioridad} = req.params;
+    const {id} = req.params;
 
     const objeto = incidencias.find(i => i.id === parseInt(id));
 
@@ -159,10 +159,9 @@ const clasificacion = (req, res) => {
         return res.status(400).json(`Incidencia no encontrada (${id})`);
     }
 
-    const nuevaClasificacion = {id, clas};
-    nuevaClasificacion.id = id;
+    const nuevaClasificacion = {id: id, clas: " "};
 
-    switch(prioridad){
+    switch(objeto.prioridad){
         case "Baja":
             nuevaClasificacion.clas = "Normal";
             break;
