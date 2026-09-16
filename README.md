@@ -185,6 +185,5 @@ GET /incidencias/1/clasificacion
 | Nombre | Carnet |
 |--------|--------|
 | Oscar Ignacio Gil Villalta | 00186825 |
+| Eduardo Gabriel Pacas Mejía | 00134525 |
 | | |
-| | |
->>>>>>> 56d6c0570a01ff1b4b0b80b67c9862331cac6103
