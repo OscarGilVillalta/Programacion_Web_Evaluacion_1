@@ -1,6 +1,7 @@
 const helper = require('../utils/helper.js');
 
 const incidencias = [];
+//const estadisticas = [];
 
 //! Crear una incidencia
 const crearIncidencia = (req, res) => {
@@ -8,7 +9,7 @@ const crearIncidencia = (req, res) => {
 
     const nuevoPaquete = {id, empleado, area, descripcion, prioridad, estado};
     nuevoPaquete.id = helper.generarID();
-    nuevoPaquete.estado = "pendiente";
+    nuevoPaquete.estado = "Pendiente";
     
     const validaciones = [
         {validar : helper.cadenaVacia(empleado), info : "El empleado se encuentra vacio"},
@@ -111,4 +112,16 @@ const eliminarIncidencia = (req, res) => {
     incidencias.splice(index, 1);
 
     res.status(400).json({message : ""});
+}
+
+//! Estadisticas de estado
+
+const estadisticas = (req, res) => {
+    res.status(200).json({
+        totalIncidencias: incidencias.length,
+        pendientes: incidencias.filter(incidencias => incidencias.estado === "Pendiente").length,
+        enProceso: incidencias.filter(incidencias => incidencias.estado === "En Proceso").length,
+        resueltas: incidencias.filter(incidencias => incidencias.estado === "Resuelta").length,
+        canceladas: incidencias.filter(incidencias => incidencias.estado === "Cancelada").length
+    });
 }

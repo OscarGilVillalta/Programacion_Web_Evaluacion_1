@@ -11,10 +11,10 @@ const {
     clasificacion
 } = require ('../controllers/incidenciasController.js')
 
-router.post('/', crearIncidencia);
-router.get('/', listarIncidencias);
-router.get('/:id', buscarID);
-router.put('/:id/:estado', cambiarEstado);
-router.delete('/:id', eliminarIncidencia);
-router.get('/', estadisticas);
-router.get('/:id', clasificacion);
+router.post('/incidencias', crearIncidencia);
+router.get('/incidencias', listarIncidencias);
+router.get('/incidencias/:id', buscarID);
+router.put('/incidencias/:id/:estado', cambiarEstado);
+router.delete('/incidencias/:id', eliminarIncidencia);
+router.get('/estadisticas', estadisticas);
+router.get('/incidencias/:id/clasificacion', clasificacion);
