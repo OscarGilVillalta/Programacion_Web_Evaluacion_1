@@ -22,4 +22,4 @@ const arregloVacio = (arr) => {
     return false;
 }
 
-module.exports(cadenaVacia, generarID, arregloVacio);
+module.exports = {cadenaVacia, generarID, arregloVacio};

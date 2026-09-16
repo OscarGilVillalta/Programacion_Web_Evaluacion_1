@@ -1,7 +1,6 @@
 const helper = require('../utils/helper.js');
 
 const incidencias = [];
-//const estadisticas = [];
 
 //! Crear una incidencia
 const crearIncidencia = (req, res) => {
@@ -179,4 +178,14 @@ const clasificacion = (req, res) => {
     }
 
     res.status(200).json(nuevaClasificacion);
+}
+
+module.exports = {
+    crearIncidencia,
+    listarIncidencias,
+    buscarID,
+    cambiarEstado,
+    eliminarIncidencia,
+    estadisticas,
+    clasificacion
 }
