@@ -15,8 +15,8 @@ router.post('/', crearIncidencia); //! Funciona
 router.get('/', listarIncidencias); //! Funciona
 router.get('/estadisticas', estadisticas); //! Funciona
 router.get('/:id', buscarID); //! Funciona
-router.put('/:id/:estado', cambiarEstado); //! Funciona (Verificar que cambie el tipo) ✓
+router.put('/:id/estado', cambiarEstado); //! Funciona (Verificar que cambie el tipo)
 router.delete('/:id', eliminarIncidencia); //! Funciona
-router.get('/clasificacion/:id', clasificacion); //! Funciona
+router.get('/:id/clasificacion', clasificacion); //! Funciona
 
 module.exports = router;
