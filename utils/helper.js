@@ -7,11 +7,19 @@ const generarID = () => {
 
 //! Verifica que una cadena de texto este vacia
 const cadenaVacia = (text) => {
-    if (text.trim().length === 0) {
+    if (toString(text.trim().length) === 0) {
         return true;
     }
 
     return false;
 };
 
-module.exports(cadenaVacia, generarID);
+const arregloVacio = (arr) => {
+    if(Array.isArray(arr) && arr.length === 0){
+        return true;
+    }
+
+    return false;
+}
+
+module.exports(cadenaVacia, generarID, arregloVacio);
